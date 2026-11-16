@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { apiUrl } from './config';
 import Navbar from './components/Navbar';
 import PatientView from './components/PatientView';
 import DoctorView from './components/DoctorView';
@@ -63,11 +64,11 @@ export default function App() {
   const fetchData = useCallback(async () => {
     try {
       // 1. Stats
-      const statsRes = await fetch('/api/stats');
+      const statsRes = await fetch(apiUrl('/api/stats'));
       if (statsRes.ok) setStats(await statsRes.json());
 
       // 2. Cities
-      const citiesRes = await fetch('/api/cities');
+      const citiesRes = await fetch(apiUrl('/api/cities'));
       if (citiesRes.ok) {
         const cData = await citiesRes.json();
         setCities(cData.cities || []);
@@ -75,28 +76,28 @@ export default function App() {
       }
 
       // 3. Doctors
-      const docsRes = await fetch('/api/doctors');
+      const docsRes = await fetch(apiUrl('/api/doctors'));
       if (docsRes.ok) {
         const dData = await docsRes.json();
         setDoctors(dData.doctors || []);
       }
 
       // 4. Ambulances
-      const ambRes = await fetch('/api/ambulances');
+      const ambRes = await fetch(apiUrl('/api/ambulances'));
       if (ambRes.ok) {
         const aData = await ambRes.json();
         setAmbulances(aData.ambulances || []);
       }
 
       // 5. Emergencies
-      const emgRes = await fetch('/api/emergencies');
+      const emgRes = await fetch(apiUrl('/api/emergencies'));
       if (emgRes.ok) {
         const eData = await emgRes.json();
         setEmergencies(eData.emergencies || []);
       }
 
       // 6. Appointments
-      const apptRes = await fetch('/api/appointments');
+      const apptRes = await fetch(apiUrl('/api/appointments'));
       if (apptRes.ok) {
         const apData = await apptRes.json();
         setAppointments(apData.appointments || []);
@@ -104,7 +105,7 @@ export default function App() {
 
       // 7. Patients (admin only)
       if (currentUser?.role === 'ADMIN') {
-        const ptsRes = await fetch('/api/patients');
+        const ptsRes = await fetch(apiUrl('/api/patients'));
         if (ptsRes.ok) {
           const pData = await ptsRes.json();
           setPatients(pData.patients || []);
@@ -147,7 +148,7 @@ export default function App() {
   // Quick Demo Login
   const handleQuickLogin = async (username, password) => {
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(apiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })

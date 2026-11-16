@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { apiUrl } from '../config';
 import {
   Stethoscope,
   Calendar,
@@ -41,7 +42,7 @@ export default function DoctorView({
   const handleToggleAvailability = async () => {
     setIsToggling(true);
     try {
-      const res = await fetch('/api/doctors/toggle-availability', {
+      const res = await fetch(apiUrl('/api/doctors/toggle-availability'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ doctorId: currentDoctor.id })
@@ -65,7 +66,7 @@ export default function DoctorView({
   // Mark Appointment Complete
   const handleMarkComplete = async (apptId) => {
     try {
-      const res = await fetch(`/api/appointments/${apptId}/complete`, { method: 'POST' });
+      const res = await fetch(apiUrl(`/api/appointments/${apptId}/complete`), { method: 'POST' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to complete appointment');
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { apiUrl } from '../config';
 import {
   AlertCircle,
   Calendar,
@@ -72,7 +73,7 @@ export default function PatientView({
     e.preventDefault();
     setIsSubmittingEmg(true);
     try {
-      const res = await fetch('/api/emergencies', {
+      const res = await fetch(apiUrl('/api/emergencies'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -113,7 +114,7 @@ export default function PatientView({
 
     setIsBookingAppt(true);
     try {
-      const res = await fetch('/api/appointments', {
+      const res = await fetch(apiUrl('/api/appointments'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -145,7 +146,7 @@ export default function PatientView({
   const handleCancelAppointment = async (apptId) => {
     if (!window.confirm(`Are you sure you want to cancel appointment ${apptId}?`)) return;
     try {
-      const res = await fetch(`/api/appointments/${apptId}/cancel`, { method: 'POST' });
+      const res = await fetch(apiUrl(`/api/appointments/${apptId}/cancel`), { method: 'POST' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to cancel appointment');
 

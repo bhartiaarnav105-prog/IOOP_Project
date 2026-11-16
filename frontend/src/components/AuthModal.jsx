@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { apiUrl } from '../config';
 import { X, Lock, User, Phone, MapPin, AlertCircle, CheckCircle } from 'lucide-react';
 
 export default function AuthModal({
@@ -28,7 +29,7 @@ export default function AuthModal({
 
     try {
       if (mode === 'login') {
-        const res = await fetch('/api/auth/login', {
+        const res = await fetch(apiUrl('/api/auth/login'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, password })
@@ -41,7 +42,7 @@ export default function AuthModal({
         if (password !== confirmPassword) {
           throw new Error('Passwords do not match');
         }
-        const res = await fetch('/api/auth/register', {
+        const res = await fetch(apiUrl('/api/auth/register'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, password, name, phone, address, cityId: parseInt(cityId, 10) })

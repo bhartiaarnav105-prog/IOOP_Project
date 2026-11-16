@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { apiUrl } from '../config';
 import {
   ShieldAlert,
   Ambulance,
@@ -71,7 +72,7 @@ export default function AdminView({
   const handleDispatchNext = async () => {
     setIsDispatching(true);
     try {
-      const res = await fetch('/api/emergencies/dispatch-next', { method: 'POST' });
+      const res = await fetch(apiUrl('/api/emergencies/dispatch-next'), { method: 'POST' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Dispatch failed');
 
@@ -91,7 +92,7 @@ export default function AdminView({
   // Handle Complete Emergency Mission
   const handleCompleteMission = async (emergId) => {
     try {
-      const res = await fetch(`/api/emergencies/${emergId}/complete`, { method: 'POST' });
+      const res = await fetch(apiUrl(`/api/emergencies/${emergId}/complete`), { method: 'POST' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to complete mission');
 
@@ -111,7 +112,7 @@ export default function AdminView({
     if (e) e.preventDefault();
     setIsCalculatingRoute(true);
     try {
-      const res = await fetch(`/api/route?from=${routeFrom}&to=${routeTo}`);
+      const res = await fetch(apiUrl(`/api/route?from=${routeFrom}&to=${routeTo}`));
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Route calculation failed');
       setCalculatedRoute(data);
@@ -125,7 +126,7 @@ export default function AdminView({
   // Handle Toggle Doctor Availability
   const handleToggleDoctor = async (docId) => {
     try {
-      const res = await fetch('/api/doctors/toggle-availability', {
+      const res = await fetch(apiUrl('/api/doctors/toggle-availability'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ doctorId: docId })
@@ -145,7 +146,7 @@ export default function AdminView({
     e.preventDefault();
     setIsAddingDoctor(true);
     try {
-      const res = await fetch('/api/doctors', {
+      const res = await fetch(apiUrl('/api/doctors'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -176,7 +177,7 @@ export default function AdminView({
   const handleCancelAppointment = async (apptId) => {
     if (!window.confirm(`Cancel appointment ${apptId}?`)) return;
     try {
-      const res = await fetch(`/api/appointments/${apptId}/cancel`, { method: 'POST' });
+      const res = await fetch(apiUrl(`/api/appointments/${apptId}/cancel`), { method: 'POST' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to cancel');
       showToast({ type: 'success', title: 'Cancelled', message: `Appointment ${apptId} cancelled.` });
@@ -189,7 +190,7 @@ export default function AdminView({
   // Handle Mark Appointment Complete
   const handleCompleteAppointment = async (apptId) => {
     try {
-      const res = await fetch(`/api/appointments/${apptId}/complete`, { method: 'POST' });
+      const res = await fetch(apiUrl(`/api/appointments/${apptId}/complete`), { method: 'POST' });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to complete');
       showToast({ type: 'success', title: 'Completed', message: `Appointment ${apptId} marked complete.` });
