@@ -1,8 +1,11 @@
 // Base API URL configuration
-// In production (Vercel), VITE_API_URL is set to the Render backend URL (e.g. https://resq-backend.onrender.com).
-// In local development, if VITE_API_URL is empty, it falls back to empty string,
-// which causes fetch to use relative paths (e.g. /api/cities) supported by Vite's dev server plugin or proxy.
-export const API_BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+// Reads from Vite environment variable VITE_API_URL, defaulting directly to the deployed production Render backend.
+export const API_BASE_URL = (
+  import.meta.env.VITE_API_URL || 'https://resq-backend-70kg.onrender.com'
+).replace(/\/+$/, '');
+
+// Alias matching ${API_URL} convention
+export const API_URL = API_BASE_URL;
 
 export function apiUrl(endpoint) {
   const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
